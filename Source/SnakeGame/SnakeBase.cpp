@@ -2,6 +2,7 @@
 
 
 #include "SnakeBase.h"
+#include "SnakeElementBase.h"
 
 // Sets default values
 ASnakeBase::ASnakeBase()
