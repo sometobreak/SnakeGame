@@ -59,4 +59,6 @@ void ASnakeBase::Move(float DeltaTime)
 		MovementVector.Y -= MovementSpeedDelta;
 		break;
 	}
+
+	AddActorWorldOffset(MovementVector);
 }
