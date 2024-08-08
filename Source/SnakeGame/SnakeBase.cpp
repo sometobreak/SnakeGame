@@ -18,47 +18,60 @@ ASnakeBase::ASnakeBase()
 void ASnakeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	AddSnakeElement(4);
+	SetActorTickInterval(MovementSpeed);
+	AddSnakeElement(5);
 }
 
 // Called every frame
 void ASnakeBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	Move(DeltaTime);
+	Move();
 }
 
 void ASnakeBase::AddSnakeElement(int ElementNum)
 {
-	for (int i = 0; i < ElementNum; ++i)
+	for (int i = 0; i < ElementNum; i++)
 	{
-		FVector NewLocation(SnakeElements.Num() * ElementSize, 0, 0);
+		FVector NewLocation(-SnakeElements.Num() * ElementSize, 0, 0);
 		FTransform NewTransform(NewLocation);
-		auto NewSnakeElement = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
+		ASnakeElementBase* NewSnakeElement = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
 		SnakeElements.Add(NewSnakeElement);
 	}
 }
 
-void ASnakeBase::Move(float DeltaTime)
+void ASnakeBase::Move()
 {
-	FVector MovementVector;
-	float MovementSpeedDelta = MovementSpeed * DeltaTime;
+	FVector MovementVector(ForceInitToZero);
+	float MoveSpeed = ElementSize;
 
 	switch (LastMoveDirection)
 	{
 	case EMovementDirection::UP:
-		MovementVector.X += MovementSpeedDelta;
+		MovementVector.X += MoveSpeed;
 		break;
 	case EMovementDirection::DOWN:
-		MovementVector.X -= MovementSpeedDelta;
+		MovementVector.X -= MoveSpeed;
 		break;
 	case EMovementDirection::LEFT:
-		MovementVector.Y += MovementSpeedDelta;
+		MovementVector.Y += MoveSpeed;
 		break;
 	case EMovementDirection::RIGHT:
-		MovementVector.Y -= MovementSpeedDelta;
+		MovementVector.Y -= MoveSpeed;
 		break;
 	}
 
-	AddActorWorldOffset(MovementVector);
+	//AddActorWorldOffset(MovementVector);
+	
+	//move snake's body
+	for (int i = SnakeElements.Num() - 1; i > 0; i--)
+	{
+		auto CurrentElement = SnakeElements[i];
+		auto PrevElement = SnakeElements[i - 1];
+		FVector PrevLocation = PrevElement->GetActorLocation();
+		CurrentElement->SetActorLocation(PrevLocation);
+	}
+
+	//move snake's head
+	SnakeElements[0]->AddActorWorldOffset(MovementVector);
 }

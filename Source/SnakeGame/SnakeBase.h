@@ -32,11 +32,11 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float ElementSize;
 
-	UPROPERTY()
-	TArray<ASnakeElementBase*> SnakeElements;
-
 	UPROPERTY(EditDefaultsOnly)
 	float MovementSpeed;
+
+	UPROPERTY()
+	TArray<ASnakeElementBase*> SnakeElements;
 
 	UPROPERTY()
 	EMovementDirection LastMoveDirection;
@@ -50,5 +50,5 @@ public:
 
 	void AddSnakeElement(int ElementNum = 1);
 
-	void Move(float DeltaTime);
+	void Move();
 };
