@@ -4,6 +4,7 @@
 #include "PlayerPawnBase.h"
 #include "Engine/Classes/Camera/CameraComponent.h"
 #include "SnakeBase.h"
+#include "Wall.h"
 #include "Components/InputComponent.h"
 
 // Sets default values
@@ -21,6 +22,7 @@ void APlayerPawnBase::BeginPlay()
 	Super::BeginPlay();
 	SetActorRotation(FRotator(-90, 0, 0));
 	CreateSnakeActor();
+	CreateWalls();
 }
 
 // Called every frame
@@ -42,6 +44,23 @@ void APlayerPawnBase::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 void APlayerPawnBase::CreateSnakeActor()
 {
 	SnakeActor = GetWorld()->SpawnActor<ASnakeBase>(SnakeActorClass, FTransform());
+}
+
+void APlayerPawnBase::CreateWalls()
+{
+	TopWall = GetWorld()->SpawnActor<AWall>(WallClass, FTransform(FVector(500.0f, 0.0f, 0.0f)));
+	LeftWall = GetWorld()->SpawnActor<AWall>(WallClass, FTransform(FVector(0.0f, -500.0f, 0.0f)));
+	BotWall = GetWorld()->SpawnActor<AWall>(WallClass, FTransform(FVector(-500.0f, 0.0f, 0.0f)));
+	RightWall = GetWorld()->SpawnActor<AWall>(WallClass, FTransform(FVector(0.0f, 500.0f, 0.0f)));
+	if (IsValid(LeftWall))
+	{
+		TopWall->MeshComponent->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+	}
+	if (IsValid(RightWall))
+	{
+		BotWall->MeshComponent->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
+	}
+	
 }
 
 void APlayerPawnBase::HandlePlayerVerticalInput(float value)

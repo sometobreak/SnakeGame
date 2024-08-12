@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class ASnakeBase;
+class AWall;
 
 UCLASS()
 class SNAKEGAME_API APlayerPawnBase : public APawn
@@ -26,6 +27,21 @@ public:
 
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<ASnakeBase> SnakeActorClass;
+
+	UPROPERTY(BlueprintReadWrite)
+	AWall* TopWall;
+
+	UPROPERTY(BlueprintReadWrite)
+	AWall* LeftWall;
+
+	UPROPERTY(BlueprintReadWrite)
+	AWall* BotWall;
+
+	UPROPERTY(BlueprintReadWrite)
+	AWall* RightWall;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AWall> WallClass;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -38,6 +54,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	void CreateSnakeActor();
+
+	void CreateWalls();
 
 	UFUNCTION()
 	void HandlePlayerVerticalInput(float value);

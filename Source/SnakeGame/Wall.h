@@ -5,19 +5,19 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Interactable.h"
-#include "SnakeElementBase.generated.h"
+#include "Wall.generated.h"
 
 class UStaticMeshComponent;
 class ASnakeBase;
 
 UCLASS()
-class SNAKEGAME_API ASnakeElementBase : public AActor, public IInteractable
+class SNAKEGAME_API AWall : public AActor, public IInteractable
 {
 	GENERATED_BODY()
 	
 public:	
 	// Sets default values for this actor's properties
-	ASnakeElementBase();
+	AWall();
 
 	UPROPERTY(VisibleAnyWhere, BlueprintReadOnly)
 	UStaticMeshComponent* MeshComponent;
@@ -32,20 +32,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UFUNCTION(BlueprintNativeEvent)
-	void SetFirstElementType();
-	void SetFirstElementType_Implementation();
-
 	virtual void Interact(AActor* Interactor, bool bIsHead) override;
-
-	UFUNCTION()
-	void HandleBeginOverlap(UPrimitiveComponent* OverlapComponent,
-		AActor* OtherActor,
-		UPrimitiveComponent* OtherComponent,
-		int32 OtherBodyIndex,
-		bool bFromSweep,
-		const FHitResult& SweepResult);
-
-	UFUNCTION()
-	void ToggleCollision();
 };

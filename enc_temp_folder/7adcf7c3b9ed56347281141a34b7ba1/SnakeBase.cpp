@@ -38,13 +38,14 @@ void ASnakeBase::AddSnakeElement(int ElementNum)
 		FVector NewLocation(-SnakeElements.Num() * ElementSize, 0, 0);
 		FTransform NewTransform(NewLocation);
 		ASnakeElementBase* NewSnakeElement = GetWorld()->SpawnActor<ASnakeElementBase>(SnakeElementClass, NewTransform);
+		NewSnakeElement->SetActorHiddenInGame(true);
 		NewSnakeElement->SnakeOwner = this;
 		int32 ElemIndex = SnakeElements.Add(NewSnakeElement);
 		if (ElemIndex == 0)
 		{
 			NewSnakeElement->SetFirstElementType();
 		}
-
+		NewSnakeElement->SetActorHiddenInGame(false);
 	}
 
 	CreateFoodElement();
